@@ -120,12 +120,17 @@ main {
 .cell.cleared   { background: var(--c-cleared); }
 .cell.ship      { background: var(--c-ship); }
 .cell.water     { background: var(--c-water); }
-.cell.yes::after {
-  content: "";
-  position: absolute;
-  inset: 8%;
-  border: 2px solid var(--c-yes-border);
-  pointer-events: none;
+/* Gold tint + border on cells that are inside one or more "ship-in-zone"
+   sonar responses. We don't know WHICH of the 9 cells has the ship, just
+   that one of them does — hence the diffuse fill, not a definitive marker. */
+.cell.yes {
+  background: #fff8e1;        /* very light gold tint */
+  box-shadow: inset 0 0 0 2px var(--c-yes-border);
+}
+/* If a yes-zone cell has been confirmed empty by another sonar, the cleared
+   green takes priority but we keep the gold border to remember the original hint. */
+.cell.cleared.yes {
+  background: var(--c-cleared);
 }
 .cell.last::before {
   content: "";

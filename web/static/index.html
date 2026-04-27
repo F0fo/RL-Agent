@@ -32,7 +32,9 @@
       <div class="status" id="status">Loading…</div>
       <div class="action-modes" id="modes" role="radiogroup" aria-label="Action mode">
         <label><input type="radio" name="mode" value="fire" checked> Fire</label>
-        <label><input type="radio" name="mode" value="sonar"> Sonar (3×3)</label>
+        <label title="Spend a turn to ask: is any ship cell inside this 3×3 area? Returns yes or no — does not reveal which cell.">
+          <input type="radio" name="mode" value="sonar"> Sonar (3×3 yes/no)
+        </label>
       </div>
       <div class="actions">
         <button id="shuffle-btn" type="button">Shuffle my ships</button>
@@ -47,8 +49,8 @@
         <li><span class="cell sw miss"></span> miss</li>
         <li><span class="cell sw hit"></span> hit</li>
         <li><span class="cell sw sunk"></span> sunk</li>
-        <li><span class="cell sw cleared"></span> sonar: empty</li>
-        <li><span class="cell sw yes"></span> sonar: ship in zone</li>
+        <li><span class="cell sw cleared"></span> sonar: 9 cells confirmed empty</li>
+        <li><span class="cell sw yes"></span> sonar: at least one ship somewhere in these 9 cells</li>
         <li><span class="cell sw ship"></span> your ship</li>
       </ul>
     </section>
