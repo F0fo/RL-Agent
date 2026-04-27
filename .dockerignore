@@ -15,10 +15,11 @@ metrics.csv
 *.gif
 *.mp4
 
-# Unused checkpoints (we only deploy with checkpoints_sonar_v2)
-checkpoints/
-checkpoints_v2/
-checkpoints_sonar/
+# Unused checkpoints — list each explicitly so we don't accidentally exclude
+# checkpoints_sonar_v2 via prefix matching on some BuildKit versions.
+/checkpoints
+/checkpoints_v2
+/checkpoints_sonar
 
 # Dev requirements (Dockerfile uses requirements.web.txt instead)
 requirements.txt

@@ -6,7 +6,8 @@ WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONPATH=/app
 
 # Install CPU torch from the dedicated index (much smaller than the default wheel).
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
@@ -25,5 +26,6 @@ COPY checkpoints_sonar_v2/ ./checkpoints_sonar_v2/
 ENV PORT=8080
 EXPOSE 8080
 
-# Shell form so $PORT expands at runtime.
-CMD uvicorn web.server:app --host 0.0.0.0 --port ${PORT}
+# Shell form so $PORT expands at runtime. `python -m uvicorn` (instead of bare
+# `uvicorn`) puts the cwd on sys.path so the `web.server` import resolves.
+CMD python -m uvicorn web.server:app --host 0.0.0.0 --port ${PORT}

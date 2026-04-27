@@ -9,13 +9,17 @@ Production:   uvicorn web.server:app --host 0.0.0.0 --port $PORT
 """
 from __future__ import annotations
 import os
+import sys
 import time
 import uuid
 import threading
 from typing import Dict, List, Optional
 
+print(f"[boot] python={sys.version.split()[0]} cwd={os.getcwd()} files={sorted(os.listdir('.'))}", flush=True)
+
 import numpy as np
 import torch
+print(f"[boot] torch={torch.__version__} cuda={torch.cuda.is_available()}", flush=True)
 from fastapi import Cookie, FastAPI, HTTPException, Response
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -42,21 +46,26 @@ print(f"[startup] device={DEVICE}  checkpoints={CHECKPOINT_DIR}  ttl={SESSION_TT
 # ----------------------------------------------------------------------
 shooter_path = os.path.join(CHECKPOINT_DIR, "shooter_final.pt")
 placer_path = os.path.join(CHECKPOINT_DIR, "placer_final.pt")
+print(f"[boot] looking for checkpoints at {os.path.abspath(CHECKPOINT_DIR)}", flush=True)
 if not os.path.isfile(shooter_path) or not os.path.isfile(placer_path):
+    print(f"[boot] CHECKPOINT_DIR contents: {os.listdir(CHECKPOINT_DIR) if os.path.isdir(CHECKPOINT_DIR) else 'NOT A DIR'}", flush=True)
     raise FileNotFoundError(
         f"Could not find trained checkpoints in {CHECKPOINT_DIR}. "
         "Set CHECKPOINT_DIR or train first."
     )
+print(f"[boot] loading shooter from {shooter_path}", flush=True)
 
 shooter_model = ShooterNet(BOARD_SIZE, in_channels=7, num_action_channels=2).to(DEVICE)
 shooter_model.load_state_dict(torch.load(shooter_path, map_location=DEVICE))
 shooter_model.eval()
 
+print(f"[boot] loading placer from {placer_path}", flush=True)
 placer_model = PlacerNet(BOARD_SIZE, in_channels=2).to(DEVICE)
 placer_model.load_state_dict(torch.load(placer_path, map_location=DEVICE))
 placer_model.eval()
 
 placer_fn = make_model_placer(placer_model, DEVICE, deterministic=False)
+print("[boot] models loaded successfully", flush=True)
 
 
 # ----------------------------------------------------------------------
