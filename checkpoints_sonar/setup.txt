@@ -1,0 +1,4 @@
+sonar_charges=3
+in_channels=7
+num_action_channels=2
+hidden=64

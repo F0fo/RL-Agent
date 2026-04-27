@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(nvidia-smi)",
+      "Bash(pip install *)",
+      "Bash(uvicorn web.server:app --host 127.0.0.1 --port 8765 --log-level warning)",
+      "Bash(curl -sS http://127.0.0.1:8765/healthz)",
+      "Bash(curl -sS -c cookie.txt http://127.0.0.1:8765/api/state)",
+      "Bash(curl -sS -b cookie.txt -c cookie.txt -X POST http://127.0.0.1:8765/api/action -H 'Content-Type: application/json' -d '{\"kind\":\"sonar\",\"row\":4,\"col\":4}')",
+      "Bash(curl -sS -b cookie.txt -c cookie.txt -X POST http://127.0.0.1:8765/api/action -H 'Content-Type: application/json' -d '{\"kind\":\"fire\",\"row\":3,\"col\":3}')",
+      "Bash(curl -sS -b cookie.txt -X POST http://127.0.0.1:8765/api/action -H 'Content-Type: application/json' -d '{\"kind\":\"fire\",\"row\":3,\"col\":3}')",
+      "Bash(powershell -NoProfile -Command 'Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }')",
+      "Bash(curl -sS --connect-timeout 2 http://127.0.0.1:8765/healthz)"
+    ]
+  }
+}

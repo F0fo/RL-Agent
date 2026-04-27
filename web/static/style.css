@@ -1,0 +1,266 @@
+/* --------------------------------------------------------------------
+   Battleship vs AI — minimal vanilla styling.
+   Color palette mirrors visualize.py so screenshots/video match the demo.
+   -------------------------------------------------------------------- */
+
+:root {
+  --c-fog: #cfd8dc;
+  --c-miss: #90caf9;
+  --c-hit: #ef5350;
+  --c-sunk: #5e2128;
+  --c-ship: #37474f;
+  --c-water: #e3f2fd;
+  --c-cleared: #a5d6a7;
+  --c-yes-border: #fbc02d;
+  --c-grid: #90a4ae;
+  --c-bg: #fafafa;
+  --c-card: #ffffff;
+  --c-ink: #1a2027;
+  --c-muted: #607d8b;
+  --c-accent: #1976d2;
+  --c-warn: #c62828;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  color: var(--c-ink);
+  background: var(--c-bg);
+  line-height: 1.45;
+}
+
+header {
+  padding: 1.25rem 1.5rem 0.75rem;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  letter-spacing: 0.5px;
+}
+
+header .muted { color: var(--c-muted); font-weight: 400; }
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  color: var(--c-muted);
+  font-size: 0.9rem;
+}
+
+main {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.boards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 720px) {
+  .boards { grid-template-columns: 1fr; }
+}
+
+.board-card {
+  background: var(--c-card);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.board-card h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.caption {
+  margin: 0.25rem 0 0.75rem;
+  color: var(--c-muted);
+  font-size: 0.85rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: 1.4em repeat(10, 1fr);
+  grid-template-rows: 1.4em repeat(10, 1fr);
+  gap: 1px;
+  aspect-ratio: 1 / 1;
+  background: var(--c-grid);
+  border: 1px solid var(--c-grid);
+  user-select: none;
+}
+
+.board .label {
+  background: var(--c-card);
+  color: var(--c-muted);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell {
+  background: var(--c-fog);
+  position: relative;
+  cursor: default;
+}
+
+.cell.fog       { background: var(--c-fog); }
+.cell.miss      { background: var(--c-miss); }
+.cell.hit       { background: var(--c-hit); }
+.cell.sunk      { background: var(--c-sunk); }
+.cell.cleared   { background: var(--c-cleared); }
+.cell.ship      { background: var(--c-ship); }
+.cell.water     { background: var(--c-water); }
+.cell.yes::after {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border: 2px solid var(--c-yes-border);
+  pointer-events: none;
+}
+.cell.last::before {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border: 3px solid #212121;
+  pointer-events: none;
+}
+
+/* Only the AI board is clickable, and only when it's the player's turn. */
+#ai-board.clickable .cell {
+  cursor: crosshair;
+}
+#ai-board.clickable .cell.miss,
+#ai-board.clickable .cell.hit,
+#ai-board.clickable .cell.sunk {
+  cursor: not-allowed;
+}
+#ai-board:not(.clickable) .cell {
+  cursor: not-allowed;
+  opacity: 0.97;
+}
+
+.board-stats {
+  margin-top: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: var(--c-muted);
+}
+
+.board-stats strong { color: var(--c-ink); }
+
+.controls {
+  background: var(--c-card);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+@media (max-width: 720px) {
+  .controls { grid-template-columns: 1fr; }
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status.win  { color: #2e7d32; }
+.status.lose { color: var(--c-warn); }
+
+.action-modes {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+button {
+  font: inherit;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--c-muted);
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover:not([disabled]) { background: #eceff1; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+button.primary {
+  background: var(--c-accent);
+  border-color: var(--c-accent);
+  color: white;
+}
+button.primary:hover:not([disabled]) { background: #1565c0; }
+
+.legend, .history-section, .about {
+  margin-top: 1rem;
+  background: var(--c-card);
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+}
+
+.legend h3, .history-section h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--c-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.legend ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.85rem;
+}
+
+.legend .sw {
+  display: inline-block;
+  width: 14px; height: 14px;
+  vertical-align: -2px;
+  margin-right: 4px;
+  border: 1px solid var(--c-grid);
+}
+
+.history {
+  list-style: decimal;
+  margin: 0;
+  padding-left: 1.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+}
+
+.history li.human { color: var(--c-accent); }
+.history li.ai    { color: #6a1b9a; }
+
+.about {
+  font-size: 0.9rem;
+  color: var(--c-muted);
+}
+.about strong { color: var(--c-ink); }

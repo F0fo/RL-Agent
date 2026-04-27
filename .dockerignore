@@ -1,0 +1,24 @@
+# Keep the Docker build context small.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.venv/
+.idea/
+.vscode/
+
+# Don't ship dev-only stuff
+frames/
+frames_*/
+metrics.csv
+*.gif
+*.mp4
+
+# Unused checkpoints (we only deploy with checkpoints_sonar_v2)
+checkpoints/
+checkpoints_v2/
+checkpoints_sonar/
+
+# Dev requirements (Dockerfile uses requirements.web.txt instead)
+requirements.txt

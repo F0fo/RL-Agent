@@ -1,0 +1,11 @@
+# Install CUDA torch build (RTX 4070 → CUDA 12.x):
+#   pip uninstall torch
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+# The current install is CPU-only; training will work but be slower.
+
+torch>=2.0
+numpy>=1.24
+tqdm>=4.65
+matplotlib>=3.7
+imageio>=2.31
+imageio-ffmpeg>=0.4   # optional: enables MP4 output from visualize.py

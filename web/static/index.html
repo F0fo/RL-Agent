@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Battleship vs AI</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>Battleship <span class="muted">vs</span> AI</h1>
+    <p class="subtitle">PPO + adversarial self-play. Sonar enabled. Each side gets 3 charges.</p>
+  </header>
+
+  <main>
+    <section class="boards">
+      <div class="board-card">
+        <h2>Your fleet</h2>
+        <p class="caption">AI fires here</p>
+        <div class="board" id="human-board" aria-label="Your fleet"></div>
+        <div class="board-stats" id="human-stats"></div>
+      </div>
+      <div class="board-card">
+        <h2>Enemy waters</h2>
+        <p class="caption" id="ai-caption">Click a cell to fire</p>
+        <div class="board" id="ai-board" aria-label="Enemy waters"></div>
+        <div class="board-stats" id="ai-stats"></div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="status" id="status">Loading…</div>
+      <div class="action-modes" id="modes" role="radiogroup" aria-label="Action mode">
+        <label><input type="radio" name="mode" value="fire" checked> Fire</label>
+        <label><input type="radio" name="mode" value="sonar"> Sonar (3×3)</label>
+      </div>
+      <div class="actions">
+        <button id="shuffle-btn" type="button">Shuffle my ships</button>
+        <button id="new-btn" type="button" class="primary">New game</button>
+      </div>
+    </section>
+
+    <section class="legend">
+      <h3>Legend</h3>
+      <ul>
+        <li><span class="cell sw fog"></span> fog</li>
+        <li><span class="cell sw miss"></span> miss</li>
+        <li><span class="cell sw hit"></span> hit</li>
+        <li><span class="cell sw sunk"></span> sunk</li>
+        <li><span class="cell sw cleared"></span> sonar: empty</li>
+        <li><span class="cell sw yes"></span> sonar: ship in zone</li>
+        <li><span class="cell sw ship"></span> your ship</li>
+      </ul>
+    </section>
+
+    <section class="history-section">
+      <h3>History <span class="muted" id="history-count"></span></h3>
+      <ol class="history" id="history"></ol>
+    </section>
+
+    <section class="about">
+      <p>This agent reaches an average of <strong>~42 shots</strong> to sink your fleet
+      (random play needs ~95; the hunt-and-target heuristic needs ~61). It uses sonar
+      early to scout high-uncertainty zones, then switches to hunt mode after the
+      first hit.</p>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
