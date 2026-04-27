@@ -11,7 +11,8 @@
       "Bash(curl -sS -b cookie.txt -c cookie.txt -X POST http://127.0.0.1:8765/api/action -H 'Content-Type: application/json' -d '{\"kind\":\"fire\",\"row\":3,\"col\":3}')",
       "Bash(curl -sS -b cookie.txt -X POST http://127.0.0.1:8765/api/action -H 'Content-Type: application/json' -d '{\"kind\":\"fire\",\"row\":3,\"col\":3}')",
       "Bash(powershell -NoProfile -Command 'Get-NetTCPConnection -LocalPort 8765 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }')",
-      "Bash(curl -sS --connect-timeout 2 http://127.0.0.1:8765/healthz)"
+      "Bash(curl -sS --connect-timeout 2 http://127.0.0.1:8765/healthz)",
+      "Bash(PORT=8767 timeout 6 sh -c 'echo \"[cmd] PORT=${PORT}\" && exec python -m uvicorn web.server:app --host 127.0.0.1 --port \"${PORT:-8080}\" --log-level warning')"
     ]
   }
 }

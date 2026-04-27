@@ -26,6 +26,7 @@ COPY checkpoints_sonar_v2/ ./checkpoints_sonar_v2/
 ENV PORT=8080
 EXPOSE 8080
 
-# Shell form so $PORT expands at runtime. `python -m uvicorn` (instead of bare
-# `uvicorn`) puts the cwd on sys.path so the `web.server` import resolves.
-CMD python -m uvicorn web.server:app --host 0.0.0.0 --port ${PORT}
+# Use `exec` so signals (SIGTERM from Railway) reach uvicorn, and an explicit
+# sh -c so $PORT expands. The diagnostic echo lands in Deploy Logs and tells us
+# the actual port Railway assigned vs. what uvicorn ends up binding to.
+CMD ["sh", "-c", "echo \"[cmd] PORT='${PORT}'\" && exec python -m uvicorn web.server:app --host 0.0.0.0 --port \"${PORT:-8080}\""]
