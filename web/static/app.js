@@ -108,7 +108,9 @@ function cellClasses(boardData, r, c, isHumanFleet) {
     classes.push("fog");
   }
 
-  if (yesOverlap) classes.push("yes");
+  // Only show the sonar marker while the cell is still unknown — once the
+  // player fires at it, the hit/miss/sunk color must show through.
+  if (yesOverlap && v === STATE_UNKNOWN) classes.push("yes");
   return classes;
 }
 

@@ -120,17 +120,12 @@ main {
 .cell.cleared   { background: var(--c-cleared); }
 .cell.ship      { background: var(--c-ship); }
 .cell.water     { background: var(--c-water); }
-/* Gold tint + border on cells that are inside one or more "ship-in-zone"
-   sonar responses. We don't know WHICH of the 9 cells has the ship, just
-   that one of them does — hence the diffuse fill, not a definitive marker. */
+/* Sonar reported "ship somewhere in this 3x3 zone". Marker is shown only on
+   cells still unknown — once fired at, hit/miss color takes over (see
+   cellClasses() in app.js). */
 .cell.yes {
-  background: #fff8e1;        /* very light gold tint */
+  background: #fff8e1;
   box-shadow: inset 0 0 0 2px var(--c-yes-border);
-}
-/* If a yes-zone cell has been confirmed empty by another sonar, the cleared
-   green takes priority but we keep the gold border to remember the original hint. */
-.cell.cleared.yes {
-  background: var(--c-cleared);
 }
 .cell.last::before {
   content: "";
